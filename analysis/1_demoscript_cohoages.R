@@ -29,5 +29,6 @@ read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
 
 
 # Alright! Here we go!
+# GitHub is fun! 
 
 #Now to graph the data 
