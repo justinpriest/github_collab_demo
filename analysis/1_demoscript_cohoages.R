@@ -21,3 +21,6 @@ read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
   mutate(location = replace(location, location == "AL", "Auke Lake"),
          location = replace(location, location == "BR", "Berners River"),
          location = replace(location, location == "HS", "Hugh Smith Lake"))
+
+
+#Now to graph the data 
