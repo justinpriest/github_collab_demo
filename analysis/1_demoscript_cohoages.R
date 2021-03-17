@@ -28,4 +28,6 @@ read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
          location = replace(location, location == "HS", "Hugh Smith Lake"))
 
 
+# Alright! Here we go!
+
 #Now to graph the data 
