@@ -17,18 +17,52 @@ library(tidyverse)
 library(lubridate)
 
 
-read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
-  mutate(Date = ymd(as.POSIXct(Date, format = "%m/%d/%Y", tz = "US/Alaska"))) %>%
+agedata <- read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
+  mutate(Date = ymd(as.POSIXct(Date, format = "%m/%d/%Y", tz = "US/Alaska")),
+         species = "Coho Salmon") %>%
   rename("location" = "Location",
          "collectiondate" = "Date",
          "fw_age" = "Age",
          "length_mm" = "Length") %>%
   mutate(location = replace(location, location == "AL", "Auke Lake"),
          location = replace(location, location == "BR", "Berners River"),
-         location = replace(location, location == "HS", "Hugh Smith Lake"))
+         location = replace(location, location == "HS", "Hugh Smith Lake")) %>%
+  dplyr::select(species, everything()) # reorder columns
+
+agedata # View data 
 
 
-# Alright! Here we go!
-# GitHub is fun! 
 
-#Now to graph the data 
+### FIGURES
+
+ggplot(agedata, aes(x = as.factor(fw_age), y = length_mm, fill = as.factor(fw_age))) + 
+  geom_boxplot() +
+  scale_fill_manual(values = c("#F78D71", "#B5517D", "#463075")) +
+  labs(x = "Freshwater Age", 
+       y = "Length (mm)") +
+  facet_wrap(~location) +
+  theme_light() +
+  theme(
+    legend.position = "none",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.background = element_rect(fill = NA, color = NA),
+    strip.text.x = element_text(color = "gray30"),
+)
+
+
+ggplot(agedata, aes(x = length_mm, fill = as.factor(fw_age))) + 
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("#F78D71", "#B5517D", "#463075")) +
+  labs(x = "Length (mm)",
+       y = "Density proportion") +
+  facet_wrap(~location) +
+  theme_light() +
+  theme(
+    legend.position = "none",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.background = element_rect(fill = NA, color = NA),
+    strip.text.x = element_text(color = "gray30"),
+)
+
