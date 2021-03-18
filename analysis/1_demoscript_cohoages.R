@@ -15,11 +15,15 @@
 
 library(tidyverse)
 library(lubridate)
+library(ggridges)
+
+
 
 
 agedata <- read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
   mutate(Date = ymd(as.POSIXct(Date, format = "%m/%d/%Y", tz = "US/Alaska")),
-         species = "Coho Salmon") %>%
+         species = "Coho Salmon",
+         year = year(Date)) %>%
   rename("location" = "Location",
          "collectiondate" = "Date",
          "fw_age" = "Age",
@@ -27,7 +31,7 @@ agedata <- read_csv("data/ADFG_smoltages_AukeBernersHughSmith.csv") %>%
   mutate(location = replace(location, location == "AL", "Auke Lake"),
          location = replace(location, location == "BR", "Berners River"),
          location = replace(location, location == "HS", "Hugh Smith Lake")) %>%
-  dplyr::select(species, everything()) # reorder columns
+  dplyr::select(species, location, year, everything()) # reorder columns
 
 agedata # View data 
 
@@ -65,4 +69,15 @@ ggplot(agedata, aes(x = length_mm, fill = as.factor(fw_age))) +
     strip.background = element_rect(fill = NA, color = NA),
     strip.text.x = element_text(color = "gray30"),
 )
+
+
+
+
+
+
+# exploratory geom_ridges plot
+
+ggplot(agedata, aes(y = year, x= length_mm, group = year)) +
+  geom_density_ridges(alpha = 0.8) +
+  facet_wrap(~location)
 
