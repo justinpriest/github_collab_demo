@@ -55,7 +55,7 @@ ggplot(agedata, aes(x = as.factor(fw_age), y = length_mm, fill = as.factor(fw_ag
 )
 
 
-ggplot(agedata, aes(x = length_mm, fill = as.factor(fw_age))) + 
+densityplot <- ggplot(agedata, aes(x = length_mm, fill = as.factor(fw_age))) + 
   geom_density(alpha = 0.5) +
   scale_fill_manual(values = c("#F78D71", "#B5517D", "#463075")) +
   labs(x = "Length (mm)",
@@ -69,7 +69,8 @@ ggplot(agedata, aes(x = length_mm, fill = as.factor(fw_age))) +
     strip.background = element_rect(fill = NA, color = NA),
     strip.text.x = element_text(color = "gray30"),
 )
-
+densityplot
+ggsave("output/densityfig.png", densityplot, width = 6, height = 3, units = "in", dpi = 300)
 
 
 
