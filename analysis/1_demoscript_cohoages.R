@@ -82,3 +82,4 @@ ggplot(agedata, aes(y = year, x= length_mm, group = year)) +
   geom_density_ridges(alpha = 0.8) +
   facet_wrap(~location)
 
+#GGplot is the best way to plot anything 
